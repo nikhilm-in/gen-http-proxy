@@ -13,6 +13,9 @@
     "gen-http-proxy": "gen-http-proxy.js"
   },
   "files": [
-    "gen-http-proxy.js", "static", "README.md", "LICENSE"
+    "gen-http-proxy.js",
+    "static",
+    "README.md",
+    "LICENSE"
   ]
 }
