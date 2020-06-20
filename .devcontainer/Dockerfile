@@ -5,7 +5,8 @@
 
 # To fully customize the contents of this image, use the following Dockerfile instead:
 # https://github.com/microsoft/vscode-dev-containers/tree/v0.122.1/containers/javascript-node-14/.devcontainer/Dockerfile
-FROM mcr.microsoft.com/vscode/devcontainers/javascript-node:0-14
+# FROM mcr.microsoft.com/vscode/devcontainers/javascript-node:0-14
+FROM node:14.4.0
 
 ARG DOCKER_SCRIPT_SOURCE="https://raw.githubusercontent.com/microsoft/vscode-dev-containers/master/script-library/docker-debian.sh"
 ARG DOCKER_SCRIPT_SHA="dev-mode"
