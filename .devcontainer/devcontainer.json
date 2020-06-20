@@ -2,7 +2,12 @@
 // https://github.com/microsoft/vscode-dev-containers/tree/v0.122.1/containers/javascript-node-14
 {
 	"name": "Node.js 14",
-	"dockerFile": "Dockerfile",
+	"build": {
+		"dockerfile": "Dockerfile",
+		"context": "..",
+		// Update 'VARIANT' to pick a Python version. Rebuild the container 
+		// if it already exists to update. Available variants: 3, 3.6, 3.7, 3.8 
+	},
 
 	// Set *default* container specific settings.json values on container create.
 	"settings": { 
@@ -11,7 +16,8 @@
 
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
-		"dbaeumer.vscode-eslint"
+		"dbaeumer.vscode-eslint",
+		"ms-azuretools.vscode-docker"
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
