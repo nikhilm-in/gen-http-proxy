@@ -70,31 +70,43 @@ var listen = process.env['server'] || '0.0.0.0:10000';
 // The target server (provided in the form <ip>:<address>; the default value is localhost:3000)
 var target = process.env['target'] || 'localhost:3000';
 
+//The proxy host that the proxy should listen on. It is '0.0.0.0' by default
+var proxy_host = process.env['PROXY_HOST'] || '0.0.0.0';
+
+//The proxy port that the proxy should listen on. It is 80 by default
+var proxy_port = process.env['PROXY_HOST'] || '80';
+
+//The target host that the proxy should proxy to.
+var target_host = process.env['TARGET_HOST'];
+
+//The target host that the proxy should proxy to.
+var target_port = process.env['TARGET_PORT'];
+
 // If there is a single argument
-var args = process.argv.slice(2);
-if (args.length == 1)
-    // The first argument will be the target, and will have precedence over the env var
-    target = args[0];
-else if (args.length == 2) {
-    listen = args[0];
-    target = args[1];
-}
-else if (args.length != 0) {
-    console.log('usage: gen-http-proxy.js [ <target> ]');
-    return -1;
-}
+// var args = process.argv.slice(2);
+// if (args.length == 1)
+//     // The first argument will be the target, and will have precedence over the env var
+//     target = args[0];
+// else if (args.length == 2) {
+//     listen = args[0];
+//     target = args[1];
+// }
+// else if (args.length != 0) {
+//     console.log('usage: gen-http-proxy.js [ <target> ]');
+//     return -1;
+// }
 
-target = target.split(':');
-target = {
-  host: target[0] || 'localhost',
-  port: normalizeNumber(target[1] || '3000')
-};
+// target = target.split(':');
+// target = {
+//   host: target[0] || 'localhost',
+//   port: normalizeNumber(target[1] || '3000')
+// };
 
-listen = listen.split(':');
-listen = {
-  host: listen[0] || '0.0.0.0',
-  port: normalizeNumber(listen[1] || '10000')
-};
+// listen = listen.split(':');
+// listen = {
+//   host: listen[0] || '0.0.0.0',
+//   port: normalizeNumber(listen[1] || '10000')
+// };
 
 
 // The authentication function needs a token. If not provided in the URL, it will be obtained from a cookie. When the token is set to valid
@@ -177,6 +189,14 @@ function servestatic(req, res) {
 
 // The handler simply checks for the authentication and proxies the results to the server
 var handler = function (req, res) {
+  console.log('proxy_host is: %s', proxy_host);
+  console.log('proxy_port is: %s', proxy_port);
+  console.log('target_host is: %s', target_host);
+  console.log('target_port is: %s', target_port);
+  
+  // if ((target_host === undefined)  || (target_port === undefined))
+  //   console.log('Environment Variables TARGET_HOST or TARGET_PORT is not set. Both need to be set for the proxy to work.');
+  //   process.exit(9);
   if (checkauth(req,res))
     proxy.web(req, res);
   else {
@@ -218,7 +238,11 @@ proxy.on('error', function(err, req, res){
 // Show some information when start listening
 server.on('listening', function() {
   var addr = server.address();
-
+  console.log('proxy_host is: %s', proxy_host);
+  console.log('proxy_port is: %s', proxy_port);
+  console.log('target_host is: %s', target_host);
+  console.log('target_port is: %s', target_port);
+  
   console.log('redirecting to %s:%d', target.host, target.port);
   console.log('access url: %s://%s:%s?token=%s', secure?'https':'http', addr.address, addr.port, token);
   console.log('token: %s', token);
