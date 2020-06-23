@@ -5,7 +5,9 @@ This repo is the modified, dockerized version of [Dealfonso's gen-http-proxy](ht
 
 ## Usage
 
-Pull the docker image from [Docker hub](https://hub.docker.com/r/nikhilmin/gen-http-proxy) using the command ```https://hub.docker.com/r/nikhilmin/gen-http-proxy```
+Pull the docker image from the [Docker hub repo](https://hub.docker.com/r/nikhilmin/gen-http-proxy) using the command ```docker pull nikhilmin/gen-http-proxy:latest```
+
+You can run the container using the docker run command. Make sure to pass the target application endpoint and port in the environment variables. You can also pass a custom authentication token if you want. By default it generates a random token.
 
 ```
 docker run -it -p 80:80 -e TARGET_HOST=<Application Endpoint> -e TARGET_PORT=<Application Port> -e  token=<Custom Token> nikhilmin/gen-http-proxy:latest
@@ -15,8 +17,7 @@ token: <Custom Token>
 use cookies: true
 expiration: 60
 ```
-
-And then open a broswer and point it to the proxy. (e.g. `http://www.myserver.com`) and we will get a page like this one:
+To verify it is working open a broswer and point it to the proxy. (e.g. `http://www.myserver.com`) and you will get a page like this one:
 
 ![Login dialog](https://raw.githubusercontent.com/nikhilm-in/gen-http-proxy/master/img/login.png)
 
