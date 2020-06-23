@@ -204,7 +204,7 @@ var handler = function (req, res) {
       servestatic(req, res);
     else {
       res.statusCode = 401;
-      res.end('Unauthorized');
+      res.end(JSON.stringify({ 'statusCode': 401, 'message': 'Unauthorized' }));
     }
   }
 };
