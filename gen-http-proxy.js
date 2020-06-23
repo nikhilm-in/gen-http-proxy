@@ -44,7 +44,7 @@ secure = (secure == "true" || secure == "1");
 
 // A token to have access to the server (disabled if set to blank). If no token provided, a random one will be generated
 var token = process.env['token'];
-if (token === undefined) token = require('crypto').randomBytes(16).toString('hex');
+if (token === undefined) token = require('crypto').randomBytes(32).toString('hex');
 
 // Key file and Certificate file for the HTTPS server
 var keyfile = process.env['key'] || './server.key';
