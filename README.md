@@ -1,26 +1,24 @@
 # gen-http-proxy
 `gen-http-proxy` is a generic http proxy to an user defined `<host>:<port>` that provides an SSL layer (i.e. https access) and token authentication.
 
-A common use case is to have a `node` application that is being served at `localhost:3000` and you want to have some kind of access control and add https support.
+This repo is the modified, dockerized version of [Dealfonso's gen-http-proxy](https://github.com/dealfonso/gen-http-proxy)
 
 ## Usage
 
-Let's suppose that we have a node application serving in `localhost:3000`. That means that it will not accept external connections (because it is bound to `localhost`). And let's assume that our application has not any kind of access control (it can be acceeded anonymously).
+Pull the docker image from [Docker hub](https://hub.docker.com/r/nikhilmin/gen-http-proxy) using the command ```https://hub.docker.com/r/nikhilmin/gen-http-proxy```
 
-Once installed **gen-http-proxy** we can issue the next command:
-
-```console
-$ sudo gen-http-proxy :80 localhost:3000
-redirecting to localhost:3000
-access url: http://0.0.0.0:80?token=bb52dae7c72cf39b33c55586b8dd83d7
-token: bb52dae7c72cf39b33c55586b8dd83d7
+```
+docker run -it -p 80:80 -e TARGET_HOST=<Application Endpoint> -e TARGET_PORT=<Application Port> -e  token=<Custom Token> nikhilmin/gen-http-proxy:latest
+redirecting to <Application Endpoint>:<Application Port>
+access url: http://0.0.0.0:80?token=<Custom Token>
+token: <Custom Token>
 use cookies: true
 expiration: 60
 ```
 
-And then we will be able to go to a broswer, point to our server (e.g. `http://www.myserver.com`) and we will get a page like this one:
+And then open a broswer and point it to the proxy. (e.g. `http://www.myserver.com`) and we will get a page like this one:
 
-![Login dialog](img/login.png)
+![Login dialog](https://raw.githubusercontent.com/nikhilm-in/gen-http-proxy/master/img/login.png)
 
 Now you can put the authentication token `bb52dae7c72cf39b33c55586b8dd83d7` in the dialog, and you will be granted the access to the server through the standard http port (i.e. 80).
 
