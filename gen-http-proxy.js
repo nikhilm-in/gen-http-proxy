@@ -112,6 +112,12 @@ var target_port = process.env['TARGET_PORT'];
 //   port: normalizeNumber(listen[1] || '10000')
 // };
 
+function checkendpoints(req, res) {
+  if ((target_host != undefined) || (target_port != undefined))
+    return false;
+  else
+    return true;
+}
 
 // The authentication function needs a token. If not provided in the URL, it will be obtained from a cookie. When the token is set to valid
 //   the value will be stored in the cookie so that it is not needed to pass the token in the URL again
@@ -193,23 +199,20 @@ function servestatic(req, res) {
 
 // The handler simply checks for the authentication and proxies the results to the server
 var handler = function (req, res) {
-  // console.log('proxy_host is: %s', proxy_host);
-  // console.log('proxy_port is: %s', proxy_port);
-  // console.log('target_host is: %s', target_host);
-  // console.log('target_port is: %s', target_port);
-  
-  // if ((target_host === undefined)  || (target_port === undefined))
-  //   console.log('Environment Variables TARGET_HOST or TARGET_PORT is not set. Both need to be set for the proxy to work.');
-  //   process.exit(9);
-  if (checkauth(req,res))
-    proxy.web(req, res);
-  else {
-    if (staticserver) 
-      servestatic(req, res);
+  if (checkendpoints(req, res))
+    if (checkauth(req,res))
+      proxy.web(req, res);
     else {
-      res.statusCode = 401;
-      res.end(JSON.stringify({ 'statusCode': 401, 'message': 'Unauthorized' }));
+      if (staticserver) 
+        servestatic(req, res);
+      else {
+        res.statusCode = 401;
+        res.end(JSON.stringify({ 'statusCode': 401, 'message': 'Unauthorized' }));
+      }
     }
+  else {
+    console.log('Either TARGET_HOST or TARGET_PORT is undefined. Provide both the values in environment variables to continue');
+    process.exit(9);
   }
 };
 
