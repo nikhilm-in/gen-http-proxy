@@ -42,9 +42,12 @@ function normalizeNumber(val) {
 var secure = process.env['secure'] || "false";
 secure = (secure == "true" || secure == "1");
 
+//The token length that the proxy should use.
+var token_length = process.env['TOKEN_LENGTH'] || '32';
+
 // A token to have access to the server (disabled if set to blank). If no token provided, a random one will be generated
 var token = process.env['token'];
-if (token === undefined) token = require('crypto').randomBytes(32).toString('hex');
+if (token === undefined) token = require('crypto').randomBytes(token_length).toString('hex');
 
 // Key file and Certificate file for the HTTPS server
 var keyfile = process.env['key'] || './server.key';
@@ -64,11 +67,11 @@ staticserver = (staticserver == "true" || staticserver == "1");
 // If enabling the static server, which folder should serve
 var staticfolder = process.env['staticfolder'] || './static';
 
-// The IP address and port in which the proxy has to listen
-var listen = process.env['server'] || '0.0.0.0:10000';
+// // The IP address and port in which the proxy has to listen
+// var listen = process.env['server'] || '0.0.0.0:10000';
 
-// The target server (provided in the form <ip>:<address>; the default value is localhost:3000)
-var target = process.env['target'] || 'localhost:3000';
+// // The target server (provided in the form <ip>:<address>; the default value is localhost:3000)
+// var target = process.env['target'] || 'localhost:3000';
 
 //The proxy host that the proxy should listen on. It is '0.0.0.0' by default
 var proxy_host = process.env['PROXY_HOST'] || '0.0.0.0';
@@ -81,6 +84,7 @@ var target_host = process.env['TARGET_HOST'];
 
 //The target host that the proxy should proxy to.
 var target_port = process.env['TARGET_PORT'];
+
 
 // If there is a single argument
 // var args = process.argv.slice(2);
