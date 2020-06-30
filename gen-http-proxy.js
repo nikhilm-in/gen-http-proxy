@@ -43,7 +43,7 @@ var secure = process.env['secure'] || "false";
 secure = (secure == "true" || secure == "1");
 
 //The token length that the proxy should use.
-var token_length = process.env['TOKEN_LENGTH'] || '32';
+var token_length = normalizeNumber(process.env['TOKEN_LENGTH'] || '32');
 
 // A token to have access to the server (disabled if set to blank). If no token provided, a random one will be generated
 var token = process.env['token'];
@@ -111,7 +111,9 @@ var target_port = process.env['TARGET_PORT'];
 //   host: listen[0] || '0.0.0.0',
 //   port: normalizeNumber(listen[1] || '10000')
 // };
-
+// if ((target_host != undefined) || (target_port != undefined))
+//   console.log('Either TARGET_HOST or TARGET_PORT is undefined. Provide both the values in environment variables to continue');
+//   process.exit(9);
 function checkendpoints(req, res) {
   if ((target_host != undefined) || (target_port != undefined))
     return false;
@@ -231,7 +233,7 @@ server.on('upgrade', function (req, socket, head) {
 
 // Create the proxy to the target server and port
 var proxy = httpProxy.createServer({
-  target: target,
+  target: target_host+':'+target_port,
   ws: true
 });
 
@@ -245,6 +247,7 @@ proxy.on('error', function(err, req, res){
 // Show some information when start listening
 server.on('listening', function() {
   var addr = server.address();
+  console.log('Starting proxy server...');
   console.log('proxy_host is: %s', proxy_host);
   console.log('proxy_port is: %s', proxy_port);
   console.log('target_host is: %s', target_host);
