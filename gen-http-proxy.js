@@ -193,10 +193,10 @@ function servestatic(req, res) {
 
 // The handler simply checks for the authentication and proxies the results to the server
 var handler = function (req, res) {
-  console.log('proxy_host is: %s', proxy_host);
-  console.log('proxy_port is: %s', proxy_port);
-  console.log('target_host is: %s', target_host);
-  console.log('target_port is: %s', target_port);
+  // console.log('proxy_host is: %s', proxy_host);
+  // console.log('proxy_port is: %s', proxy_port);
+  // console.log('target_host is: %s', target_host);
+  // console.log('target_port is: %s', target_port);
   
   // if ((target_host === undefined)  || (target_port === undefined))
   //   console.log('Environment Variables TARGET_HOST or TARGET_PORT is not set. Both need to be set for the proxy to work.');
@@ -247,7 +247,7 @@ server.on('listening', function() {
   console.log('target_host is: %s', target_host);
   console.log('target_port is: %s', target_port);
   
-  console.log('redirecting to %s:%d', target.host, target.port);
+  console.log('redirecting to %s:%d', target_host, target_port);
   console.log('access url: %s://%s:%s?token=%s', secure?'https':'http', addr.address, addr.port, token);
   console.log('token: %s', token);
   console.log('use cookies: %s', usecookies);
@@ -255,4 +255,4 @@ server.on('listening', function() {
 });
 
 // Start the server
-server.listen(listen.port, listen.host);
+server.listen(proxy_host, proxy_port);
