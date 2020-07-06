@@ -8,7 +8,7 @@
 		// Update 'VARIANT' to pick a Python version. Rebuild the container 
 		// if it already exists to update. Available variants: 3, 3.6, 3.7, 3.8 
 	},
-	"mounts": [ "source=/var/run/docker.sock,target=/var/run/docker-host.sock,type=bind" ],
+	"mounts": [ "source=/var/run/docker.sock,target=/var/run/docker-host.sock,type=bind","source=~/.aws/,target=/root/,type=bind" ],
 	// Set *default* container specific settings.json values on container create.
 	"settings": { 
 		"terminal.integrated.shell.linux": "/bin/bash"
