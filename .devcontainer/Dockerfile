@@ -14,7 +14,6 @@ ARG ENABLE_NONROOT_DOCKER="false"
 ARG SOURCE_SOCKET=/var/run/docker-host.sock
 ARG TARGET_SOCKET=/var/run/docker.sock
 
-
 RUN apt-get update \
     && export DEBIAN_FRONTEND=noninteractive \
     # Verify common dependencies and utilities are installed
@@ -32,6 +31,7 @@ RUN apt-get update \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/*
 
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && unzip awscliv2.zip && sudo ./aws/install
 # RUN npm install
 
 # Setting the ENTRYPOINT to docker-init.sh will configure non-root access to 
